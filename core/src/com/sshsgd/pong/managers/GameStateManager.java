@@ -3,8 +3,7 @@ package com.sshsgd.pong.managers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.sshsgd.pong.gamestates.GameState;
-import com.sshsgd.pong.gamestates.PlayState;
+import com.sshsgd.pong.gamestates.*;
 
 public class GameStateManager {
 

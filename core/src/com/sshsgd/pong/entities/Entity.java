@@ -9,10 +9,7 @@ public abstract class Entity {
 
 	protected Rectangle bounds;
 	
-	public Entity(float x, float y, float width, float height) {
-		bounds = new Rectangle(x, y, width, height);
-	}
-	
+	protected abstract void init();
 	public abstract void draw(ShapeRenderer sr, SpriteBatch sb);
 	
 	public boolean collidingWith(Entity e) {
@@ -63,18 +60,8 @@ public abstract class Entity {
 		return new Vector2(getX(), getY());
 	}
 	
-	public void setPosition(Vector2 point) {
-		setX(point.x);
-		setY(point.y);
-	}
-	
 	public Vector2 getDimension() {
 		return new Vector2(getWidth(), getHeight());
-	}
-	
-	public void setDimension(Vector2 dim) {
-		setWidth(dim.x);
-		setHeight(dim.y);
 	}
 	
 }
