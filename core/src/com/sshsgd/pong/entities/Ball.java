@@ -13,15 +13,22 @@ public class Ball extends Entity {
 	private Vector2 vel;
 	private Vector2 spawn;
 	
-	public Ball(Vector2 position, float width, float height) {
+	public static final int BOUNCE_TOP_BOTTOM = 0;
+	public static final int BOUNCE_ALL_SIDES = 1;
+	
+	private int bounceMode;
+	
+	public Ball(Vector2 position, float width, float height, int bounceMode) {
 		bounds = new Rectangle(position.x, position.y, width, height);
 		spawn = new Vector2(position);
+		this.bounceMode = bounceMode;
 		init();
 	}
 
-	public Ball(float x, float y, float width, float height) {
+	public Ball(float x, float y, float width, float height, int bounceMode) {
 		bounds = new Rectangle(x, y, width, height);
 		spawn = new Vector2(x, y);
+		this.bounceMode = bounceMode;
 		init();
 	}
 
@@ -35,17 +42,22 @@ public class Ball extends Entity {
 	@Override
 	public void draw(ShapeRenderer sr, SpriteBatch sb) {
 
-		sr.ellipse(getX(), getY(), getWidth(), getHeight());
+		sr.rect(getX(), getY(), getWidth(), getHeight());
 		
 	}
 	
 	public void update() {
-		wallCollisions();
+		if(bounceMode == Ball.BOUNCE_ALL_SIDES) {
+			bounceAllSides();
+		}
+		if(bounceMode == Ball.BOUNCE_TOP_BOTTOM) {
+			bounceTopBottom();
+		}
 		bounds.x += vel.x;
 		bounds.y += vel.y;
 	}
 	
-	private void wallCollisions() {
+	private void bounceAllSides() {
 		if(getX() >= Game.SIZE.x - getWidth()) {
 			bounds.x--;
 			bounceX();
@@ -65,7 +77,37 @@ public class Ball extends Entity {
 	
 	}
 	
-	public void collisions() {}
+	private void bounceTopBottom() {
+		if(getX() >= Game.SIZE.x - getWidth() + 50) {
+			reset();
+		}
+		if(getX() <= -50) {
+			reset();
+		}
+		if(getY() >= Game.SIZE.y - getHeight()) {
+			bounds.y--;
+			bounceY();
+		}
+		if(getY() <= 0) {
+			bounds.y++;
+			bounceY();
+		}
+	
+	
+	}
+	
+	public void collisions(Paddle p) {
+		if(collidingWith(p)) {
+			if(p.getSide() == Paddle.LEFT) {
+				bounds.x = p.getX() + p.getWidth() + 1;
+				bounceX();
+			}
+			if(p.getSide() == Paddle.RIGHT) {
+				bounds.x = p.getX() - getWidth() - 1;
+				bounceX();
+			}
+		}
+	}
 	
 	public void bounceX() {
 		vel.x *= -1;
@@ -76,8 +118,10 @@ public class Ball extends Entity {
 	}
 	
 	public void reset() {
-		speed = 10;
-		radians = MathUtils.random(2 * MathUtils.PI);
+		speed = Game.SIZE.x / 80;
+		do {
+			radians = MathUtils.random(2 * MathUtils.PI);
+		} while(Math.abs(MathUtils.cos(radians) * speed) < 1.5);
 		vel.set(0, 0);
 		bounds.x = spawn.x;
 		bounds.y  = spawn.y;
