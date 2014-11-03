@@ -12,19 +12,19 @@ public class GameStateManager {
 	
 	GameState state;
 	
-	public static final int TITLE = 0;
-	public static final int PLAY = 1;
+	public final int TITLE = 0;
+	public final int PLAY = 1;
 	
 	public GameStateManager() {
 		sb = new SpriteBatch();
 		sr = new ShapeRenderer();
-		setState(PLAY);
+		setState(TITLE);
 	}
 	
 	public void setState(int newState) {
 		if(state != null) state.dispose();
 		if(newState == TITLE) {
-			
+			state = new TitleState(this);
 		} 
 		if(newState == PLAY) {
 			state = new PlayState(this);

@@ -131,7 +131,7 @@ public class Ball extends Entity {
 	
 	public void reset() {
 		Game.res.getSound("peep").play();
-		speed = Game.SIZE.x / 80;
+		speed = 10;
 		do {
 			radians = MathUtils.random(2 * MathUtils.PI);
 		} while(Math.abs(MathUtils.cos(radians) * speed) < 1.5);
@@ -140,6 +140,14 @@ public class Ball extends Entity {
 		bounds.y  = spawn.y;
 		vel.x = MathUtils.cos(radians) * speed;
 		vel.y = MathUtils.sin(radians) * speed;
+	}
+
+	public Vector2 getSpawn() {
+		return spawn;
+	}
+
+	public void setSpawn(Vector2 spawn) {
+		this.spawn = spawn;
 	}
 
 }

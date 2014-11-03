@@ -18,6 +18,9 @@ public class Game extends ApplicationAdapter {
 	
 	public static Content res;
 	
+	public float time;
+	public int frames, fps;
+	
 	@Override
 	public void create () {
 		
@@ -33,6 +36,7 @@ public class Game extends ApplicationAdapter {
 		res.loadSound("sound", "ping_pong_8bit_peeeeeep.ogg", "peep");
 		res.loadSound("sound", "ping_pong_8bit_plop.ogg", "plop");
 		res.loadBitmapFont("font", "prstartk.ttf", "main", 26, Color.WHITE);
+		res.loadBitmapFont("font", "prstartk.ttf", "title", 36, Color.WHITE);
 		
 		gsm = new GameStateManager();
 		
@@ -44,8 +48,17 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		frames++;
+		float dt = Gdx.graphics.getDeltaTime();
+		time += dt;
+		if(time >= 1) {
+			fps = frames;
+			frames = 0;
+			time = 0;
+		}
+		Gdx.graphics.setTitle("Pong | " + fps + " fps");
 		gsm.handleInput();
-		gsm.update(Gdx.graphics.getDeltaTime());
+		gsm.update(dt);
 		gsm.draw();
 		
 		MyInput.update();
@@ -61,6 +74,7 @@ public class Game extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		gsm.dispose();
+		res.removeAll();
 	}
 	
 }

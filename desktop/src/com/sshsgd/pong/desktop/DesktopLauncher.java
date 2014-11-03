@@ -7,8 +7,9 @@ import com.sshsgd.pong.Game;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 800;
-		config.height = 600;
+		config.width = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		config.height = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+		config.fullscreen = true;
 		new LwjglApplication(new Game(), config);
 	}
 }

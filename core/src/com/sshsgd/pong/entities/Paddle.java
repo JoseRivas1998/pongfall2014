@@ -20,13 +20,8 @@ public abstract class Paddle extends Entity {
 		x = 0;
 		y = Game.CENTER.y - (height * .5f);
 		yVel = 0;
-		if(this.side == Paddle.LEFT) {
-			x = (Game.SIZE.x * .15f) - (width * .5f);
-		}
-		if(this.side == Paddle.RIGHT) {
-			x = (Game.SIZE.x * .85f) - (width * .5f);
-		}
 		bounds = new Rectangle(x, y, width, height);
+		resetX(width);
 		init();
 	}
 	
@@ -54,5 +49,14 @@ public abstract class Paddle extends Entity {
 	}
 
 	public abstract void behave();
+	
+	public void resetX(float width) {
+		if(this.side == Paddle.LEFT) {
+			bounds.x = (Game.SIZE.x * .15f) - (width * .5f);
+		}
+		if(this.side == Paddle.RIGHT) {
+			bounds.x = (Game.SIZE.x * .85f) - (width * .5f);
+		}
+	}
 	
 }
