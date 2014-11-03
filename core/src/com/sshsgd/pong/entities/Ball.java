@@ -110,14 +110,27 @@ public class Ball extends Entity {
 	}
 	
 	public void bounceX() {
+		Game.res.getSound("beep").play();
 		vel.x *= -1;
+		if(vel.x > 0) {
+			vel.x++;
+		} else {
+			vel.x--;
+		}
 	}
 	
 	public void bounceY() {
+		Game.res.getSound("plop").play();
 		vel.y *= -1;
+		if(vel.y > 0) {
+			vel.y++;
+		} else {
+			vel.y--;
+		}
 	}
 	
 	public void reset() {
+		Game.res.getSound("peep").play();
 		speed = Game.SIZE.x / 80;
 		do {
 			radians = MathUtils.random(2 * MathUtils.PI);

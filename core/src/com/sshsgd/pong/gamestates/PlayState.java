@@ -14,8 +14,8 @@ public class PlayState extends GameState {
 
 	private Ball b;
 	private MyCamera cam;
-	private float leftScore, rightScore;
-	private Paddle player;
+	private int leftScore, rightScore;
+	private Paddle player, opponent;
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -30,13 +30,16 @@ public class PlayState extends GameState {
 		leftScore = 0;
 		rightScore = 0;
 		player = new Player(25, 100, Paddle.LEFT);
+		opponent = new AI(25, 100, Paddle.RIGHT, b);
 	}
 
 	@Override
 	public void update(float dt) {
 		b.update();
 		player.update();
+		opponent.update();
 		b.collisions(player);
+		b.collisions(opponent);
 		scoreCheck();
 	}
 	
@@ -57,8 +60,29 @@ public class PlayState extends GameState {
 		sr.setColor(Color.WHITE);
 		b.draw(sr, sb);
 		player.draw(sr, sb);
+		opponent.draw(sr, sb);
 		sr.end();
 
+		sb.begin();
+		drawScore(sb);
+		sb.end();
+	}
+	
+	private void drawScore(SpriteBatch sb) {
+		String right, left;
+		left = "" + leftScore;
+		right = "" + rightScore;
+		float lX, lY, lW, lH, rX, rY, rW, rH;
+		lW = Game.res.getFont("main").getBounds(left).width;
+		lH = Game.res.getFont("main").getBounds(left).height - Game.res.getFont("main").getDescent();
+		rW = Game.res.getFont("main").getBounds(right).width;
+		rH = Game.res.getFont("main").getBounds(right).height - Game.res.getFont("main").getDescent();
+		lX = (Game.SIZE.x * .25f) - (lW * .5f);
+		lY = (Game.SIZE.y * .75f) + (lH * .5f);
+		rX = (Game.SIZE.x * .75f) - (rW * .5f);
+		rY = (Game.SIZE.y * .75f) + (rH * .5f);
+		Game.res.getFont("main").draw(sb, left, lX, lY);
+		Game.res.getFont("main").draw(sb, right, rX, rY);
 	}
 
 	@Override
